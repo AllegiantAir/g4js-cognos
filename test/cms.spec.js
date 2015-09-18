@@ -19,7 +19,7 @@ describe('cms module', function(){
   });
 
   after(function(done){
-    cms.logout().then(function(){
+    cms.logoff().then(function(){
       done();
     });
   });
@@ -36,9 +36,9 @@ describe('cms module', function(){
 
   });
 
-  describe('login()', function(){
+  describe('logon()', function(){
     it('should be able to login', function(done){
-      cms.login().then(function(response){
+      cms.logon().then(function(response){
           assert.equal(200, response.statusCode);
           assert.isObject(response.bodyJson, 'response contains bodyJson');
           assert.isTrue(response.bodyJson.accountID instanceof String, 'accountID is valid');
@@ -47,20 +47,30 @@ describe('cms module', function(){
     });
   });
 
-  describe('getReportById()', function(){
-    this.timeout(15000);
-
-    it('should be able to run a report', function(done){
-      cms.login().then(function(){
-        cms.getReportById(fixture.reportId, fixture.reportParams).then(function(response){
+  describe('logoff()', function(){
+    it('should be able to logoff', function(done){
+      cms.logoff().then(function(response){
           assert.equal(200, response.statusCode);
-          assert.isTrue(response.body instanceof String, 'HTML is valid');
-          done();
-        });
-
+          assert.equal('<noerror/>', response.body, 'response contains <noerror/>');
       });
+      done();
     });
-
   });
+
+  //describe('getReportById()', function(){
+  //  this.timeout(15000);
+  //
+  //  it('should be able to run a report', function(done){
+  //    cms.logon().then(function(){
+  //      cms.getReportById(fixture.reportId, fixture.reportParams).then(function(response){
+  //        assert.equal(200, response.statusCode);
+  //        assert.isTrue(response.body instanceof String, 'HTML is valid');
+  //        done();
+  //      });
+  //
+  //    });
+  //  });
+  //
+  //});
 
 });
