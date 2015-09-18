@@ -1,0 +1,13 @@
+{
+  "serviceUrl": "http://localhost",
+  "namespace": "acmecompany",
+  "username": "michael.jordan",
+  "password": "dabulls!",
+  "reportId": "",
+  "reportParams": {
+    "p_prmPropertyID": 2,
+    "p_prmStartDate": "2015-09-01",
+    "p_prmEndDate": "2015-09-15",
+    "fmt": "HTMLFragment"
+  }
+}
