@@ -55,7 +55,10 @@ gulp.task('test', ['lint'], function(cb) {
     .pipe(istanbul.hookRequire())
     .on('finish', function () {
       return gulp.src(paths.spec)
-        .pipe(plugins.mocha({ reporter: 'spec' }))
+        .pipe(plugins.mocha({
+          reporter: 'spec',
+          require: ['./test/helpers/chai']
+        }))
         .pipe(istanbul.writeReports({
           reporters: [
             'lcov',

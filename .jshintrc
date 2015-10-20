@@ -53,10 +53,13 @@
   "indent": 2,
 
   "globals": {
+    "assert"   : false,
     "describe" : false,
     "it"       : false,
     "before"   : false,
+    "beforeEach": false,
     "after"    : false,
+    "afterEach": false,
     "_"        : true
   }
 }

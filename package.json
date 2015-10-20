@@ -1,15 +1,15 @@
 {
   "name": "g4js-cognos",
   "description": "Node.js client for Cognos application integration utilizing CMS.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/AllegiantAir/g4js-cognos.git"
   },
   "engines": {
-    "node": ">=0.10.40",
-    "npm": ">=2.14.2"
+    "node": ">=0.10.36",
+    "npm": ">=1.3.6"
   },
   "main": "lib",
   "scripts": {
@@ -17,7 +17,6 @@
     "watch": "gulp watch"
   },
   "dependencies": {
-    "js-yaml": "^3.3.0",
     "lodash": "^3.10.1",
     "q": "^1.4.1",
     "request": "^2.62.0",
@@ -34,6 +33,7 @@
     "gulp-mocha": "^2.1.1",
     "gulp-shell": "^0.4.2",
     "jshint-stylish": "^2.0.0",
+    "sinon": "^1.17.1",
     "sprintf-js": "^1.0.3"
   },
   "license": "MIT"

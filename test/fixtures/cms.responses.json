@@ -1,0 +1,6 @@
+{
+  "logon": "<auth:accountInfo xmlns:auth=\"http://developer.cognos.com/schemas/ccs/auth/types/1\"><auth:accountID>CAMID(\"acmecompany:u:68a77de3c420284a8af500d95765abdc\")</auth:accountID><auth:displayName>Nesbert Hidalgo</auth:displayName></auth:accountInfo>",
+  "logonFail": "<error>RDS-ERR-1005 The logon requirements for IBM Cognos could not be obtained. You may already be logged into this namespace, or the target namespace does not exist.</error>",
+  "logoff": "<noerror/>",
+  "getReportById": "<div>HTML REPORT</div>"
+}
