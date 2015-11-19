@@ -1,4 +1,4 @@
-# g4js-cognos [![Build Status](https://secure.travis-ci.org/AllegiantAir/g4js-cognos.png)](http://travis-ci.org/AllegiantAir/g4js-cognos)
+# g4js-cognos [![Build Status](https://secure.travis-ci.org/AllegiantAir/g4js-cognos.png)](http://travis-ci.org/AllegiantAir/g4js-cognos) [![Code Climate](https://codeclimate.com/github/AllegiantAir/g4js-cognos/badges/gpa.svg)](https://codeclimate.com/github/AllegiantAir/g4js-cognos)
 Node.js client for [Cognos](http://www-01.ibm.com/software/analytics/cognos/) application integration utilizing [CMS](http://www-03.ibm.com/software/products/en/cognos-mashup-service).
 
 ## Install
@@ -15,10 +15,12 @@ Require the module:
 var Cms = require('g4js-cognos').Cms;
 ```
 
-Pass in configuration params, authenticate (logon) and get a report:
+Pass in configuration settings, authenticate and get a report by parameters:
 
 ```js
 var report = new Cms(serviceUrl, serviceNamespace, serviceUsername, servicePassword);
+
+console.log('logging on...');
 
 report.logon().then(function(response){
 
@@ -39,6 +41,44 @@ report.logon().then(function(response){
   
 });
 ```
+
+Pass in configuration settings, authenticate and export a report by parameters:
+
+```js
+var report = new Cms(serviceUrl, serviceNamespace, serviceUsername, servicePassword);
+var fs = require('fs');
+
+console.log('logging on...');
+
+report.logon().then(function(response){
+
+  console.log(response.statusCode, response.body);
+
+  var qs = {
+    p_prmFromDate: '2015-10-01',
+    p_prmToDate: '2015-10-31',
+    p_prmDetailOn: 'No'
+  };
+
+  console.log('getting export...');
+  var file = '/tmp/export.xls';
+
+  report.getExportById(reportId, qs, 'CSV').then(function(response){
+    console.log('Status: ' + response.statusCode);
+
+    fs.writeFile(file, response.body, 'utf8', function(err) {
+      if (err) {
+        return console.log(err);
+      }
+
+      console.log(file + ' was created!');
+    });
+  });
+});
+```
+
+The example above exports a report in CSV format and then writes it to a file. A few output formats
+`CSV, HTML, HTMLFragment, MHT, XML`, supported formats vary on version.
 
 ## License
 

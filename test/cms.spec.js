@@ -3,12 +3,20 @@
 var sprintf = require('sprintf-js').sprintf;
 var sinon = require('sinon');
 var request = require('request');
+var fs = require('fs');
 
 var Cms = require('../lib/cms');
 
 var settingsFixture = require('./fixtures/cms.settings.json');
+//var settingsFixture = require('../coverage/cms.settings.json'); // TEMP Integration settings
 var responseFixture = require('./fixtures/cms.responses.json');
-var reportFixture = require('./fixtures/cms.report-response.json');
+var responseExportCSV;
+fs.readFile(__dirname + '/fixtures/cms.responses.export.csv', 'utf8', function (err,data) {
+  if (err) {
+    return console.log(err);
+  }
+  responseExportCSV = data;
+});
 
 describe('cms module', function(){
 
@@ -220,36 +228,54 @@ describe('cms module', function(){
 
   });
 
+  describe('getExportById()', function(){
 
-  var expectedHeader = ['Property Name', 'Trans. Date', 'Credit Card Activity', 'Refund Amount', 'Total Activity', 'Total Sales', 'Booking Fees', 'Merchant Fees', 'Remittance Amount'];
-  var expectedRow1 = ['Acme Company', '2015-10-02T00:00:00.000', '4601.25', '0.00', '4601.25', '4343.25', '258', '86.8650', '4256.3800'];
-  var expectedRow2 = ['Acme Company', '2015-10-01T00:00:00.000', '21689.55', '-26.99', '21662.56', '21358.56', '304', '427.1712', '20931.3900'];
-
-  describe('getLine()', function(){
-
-    it('should be able to parse item node for header', function(){
-      var line = this.cms.getLine(reportFixture.document.pages[0].page.body.item[0].lst.colTitle);
-      assert.deepEqual(expectedHeader, line);
+    before(function(done){
+      if (!mock) {
+        this.cms.logon().then(function () {
+          done();
+        }).catch(done);
+      } else {
+        done();
+      }
     });
 
-    it('should be able to parse item node for row', function(){
-      var line = this.cms.getLine(reportFixture.document.pages[0].page.body.item[0].lst.group.row[0].cell);
-      assert.deepEqual(expectedRow1, line);
+    it('should be able to export a report', function(done){
+
+      if (mock) {
+        var response = { statusCode:200, body:responseExportCSV };
+        this.get.callsArgWith(2, null, response);
+      } else {
+        this.timeout(5000);
+      }
+
+      this.cms.getExportById(settingsFixture.reportId, settingsFixture.reportParams, 'CSV').then(function(res){
+        assert.equal(200, res.statusCode);
+        assert.isString(res.body, 'body is a string');
+
+        assert.match(res.body, /\t/); // has tab
+        assert.match(res.body, /\n/); // has newline
+
+        done();
+      }).catch(done);
+
     });
 
-  });
+    if (mock) {
+      it('should fail logoff', function (done) {
 
-  describe('parseLstJson()', function(){
+        var response = {statusCode: 403, body: '<ERROR>'};
+        this.get.callsArgWith(2, response);
 
-    it('should be able to parse data', function(){
-      var data = this.cms.parseLstJson(reportFixture);
-      assert.deepEqual([expectedHeader, expectedRow1, expectedRow2], data);
-    });
+        this.cms.getExportById(settingsFixture.reportId, settingsFixture.reportParams, 'CSV').then(function () {
+          assert.fail('should have failed!');
+        }).catch(function (e) {
+          assert.ok(e, 'everything is ok');
+          done();
+        });
 
-    it('should return empty', function(){
-      var data = this.cms.parseLstJson({});
-      assert.deepEqual([], data);
-    });
+      });
+    }
 
   });
 

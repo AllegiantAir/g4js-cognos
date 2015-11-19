@@ -1,7 +1,7 @@
 {
   "name": "g4js-cognos",
   "description": "Node.js client for Cognos application integration utilizing CMS.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "repository": {
     "type": "git",
