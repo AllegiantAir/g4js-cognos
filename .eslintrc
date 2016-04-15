@@ -1,4 +1,9 @@
+env:
+  node: true
+  mocha: true
 ecmaFeatures: {}
+globals:
+  assert: true
 rules:
   no-alert: 0
   no-array-constructor: 0
