@@ -231,6 +231,8 @@ describe('cms module', function(){
   describe('getExportById()', function(){
 
     before(function(done){
+      settingsFixture.reportParams.fmt = 'CSV';
+
       if (!mock) {
         this.cms.logon().then(function () {
           done();
@@ -276,6 +278,54 @@ describe('cms module', function(){
 
       });
     }
+
+    it('should remove any invalid characters if present', function(done){
+      if (mock) {
+        var response = {statusCode: 200, body: '\uFFFD' + responseExportCSV};
+        this.get.callsArgWith(2, null, response);
+      }
+
+      this.cms.getExportById(settingsFixture.reportId, settingsFixture.reportParams, 'CSV').then(function(res){
+        assert.equal(200, res.statusCode);
+        assert.equal(responseExportCSV, res.body);
+        assert.isString(res.body, 'body is a string');
+
+        assert.match(res.body, /\t/); // has tab
+        assert.match(res.body, /\n/); // has newline
+
+        done();
+      }).catch(done);
+    });
+
+    // To ensure that the string replace function not called on a null object
+    it('should not crash if the body in the response from cognos is null', function(done){
+      if (mock) {
+        var response = {statusCode: 200, body: null};
+        this.get.callsArgWith(2, null, response);
+      }
+
+      this.cms.getExportById(settingsFixture.reportId, settingsFixture.reportParams, 'CSV').then(function(res){
+        assert.equal(200, res.statusCode);
+        assert.equal(res.body, null);
+
+        done();
+      }).catch(done);
+    });
+
+    it('should not attempt to remove the invalid chars if the body in the response from cognos is not a string', function(done){
+      if (mock) {
+        var spy = sinon.spy();
+
+        var response = {statusCode: 200, body: {replace : spy}};
+        this.get.callsArgWith(2, null, response);
+      }
+
+      this.cms.getExportById(settingsFixture.reportId, settingsFixture.reportParams, 'CSV').then(function(res){
+        assert(!spy.called);
+
+        done();
+      }).catch(done);
+    });
 
   });
 
