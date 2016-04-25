@@ -279,7 +279,7 @@ describe('cms module', function(){
       });
     }
 
-    it('should remove any invalid characters if present', function(done){
+    it('should replace any invalid characters if present with null char', function(done){
       if (mock) {
         var response = {statusCode: 200, body: '\uFFFD' + responseExportCSV};
         this.get.callsArgWith(2, null, response);
@@ -287,7 +287,7 @@ describe('cms module', function(){
 
       this.cms.getExportById(settingsFixture.reportId, settingsFixture.reportParams, 'CSV').then(function(res){
         assert.equal(200, res.statusCode);
-        assert.equal(responseExportCSV, res.body);
+        assert.equal('\u0000' + responseExportCSV, res.body);
         assert.isString(res.body, 'body is a string');
 
         assert.match(res.body, /\t/); // has tab
@@ -312,7 +312,7 @@ describe('cms module', function(){
       }).catch(done);
     });
 
-    it('should not attempt to remove the invalid chars if the body in the response from cognos is not a string', function(done){
+    it('should not attempt to replace the invalid chars if the body in the response from cognos is not a string', function(done){
       if (mock) {
         var spy = sinon.spy();
 
