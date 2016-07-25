@@ -80,6 +80,12 @@ report.logon().then(function(response){
 The example above exports a report in CSV format and then writes it to a file. A few output formats
 `CSV, HTML, HTMLFragment, MHT, XML`, supported formats vary on version.
 
+## Tests
+
+```sh
+$ npm run test
+```
+
 ## License
 
 [MIT](LICENSE)
