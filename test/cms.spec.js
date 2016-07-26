@@ -244,6 +244,8 @@ describe('cms module', function(){
 
     it('should be able to export a report', function(done){
 
+      var self = this;
+
       if (mock) {
         var response = { statusCode:200, body:responseExportCSV };
         this.get.callsArgWith(2, null, response);
@@ -253,6 +255,31 @@ describe('cms module', function(){
 
       this.cms.getExportById(settingsFixture.reportId, settingsFixture.reportParams, 'CSV').then(function(res){
         assert.equal(200, res.statusCode);
+        assert.isString(res.body, 'body is a string');
+        assert.equal(null, self.get.getCall(0).args[1].encoding);
+
+        assert.match(res.body, /\t/); // has tab
+        assert.match(res.body, /\n/); // has newline
+
+        done();
+      }).catch(done);
+
+    });
+
+    it('should add base64 encoding to request options when the format is spreadsheetML', function(done){
+
+      var self = this;
+
+      if (mock) {
+        var response = { statusCode:200, body:responseExportCSV };
+        this.get.callsArgWith(2, null, response);
+      } else {
+        this.timeout(5000);
+      }
+
+      this.cms.getExportById(settingsFixture.reportId, settingsFixture.reportParams, 'spreadsheetML').then(function(res){
+        assert.equal(200, res.statusCode);
+        assert.equal('base64', self.get.getCall(0).args[1].encoding);
         assert.isString(res.body, 'body is a string');
 
         assert.match(res.body, /\t/); // has tab
