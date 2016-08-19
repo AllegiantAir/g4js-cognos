@@ -39,6 +39,16 @@ describe('cms module', function(){
     }
   });
 
+  describe('defaults', function(){
+    it('should expose default settings object', function(){
+      assert.deepEqual(this.cms.defaults, {
+        jar: true,
+        gzip: true,
+        maxRedirects: 10
+      });
+    });
+  });
+
   describe('buildCredentialsXmlData()', function(){
 
     it('should be able to build xmlData for credentials', function(){
@@ -261,6 +271,26 @@ describe('cms module', function(){
         assert.match(res.body, /\t/); // has tab
         assert.match(res.body, /\n/); // has newline
 
+        done();
+      }).catch(done);
+
+    });
+
+    it('should be able to set the maximum redirects and maxListeners when exporting a report', function(done){
+
+      var self = this;
+
+      if (mock) {
+        var response = { statusCode:200, body:responseExportCSV };
+        this.get.callsArgWith(2, null, response);
+        this.cms.defaults.maxRedirects = 321;
+      } else {
+        this.timeout(5000);
+      }
+
+      this.cms.getExportById(settingsFixture.reportId, settingsFixture.reportParams, 'CSV').then(function(res){
+        assert.equal(321, request.get.getCall(0).args[1].maxRedirects);
+        assert.equal(321, require('events').EventEmitter.prototype._maxListeners);
         done();
       }).catch(done);
 
