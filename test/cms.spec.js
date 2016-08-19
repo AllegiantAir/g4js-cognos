@@ -49,6 +49,43 @@ describe('cms module', function(){
     });
   });
 
+  describe('params()', function(){
+    it('should construct params for all requests to CMS', function(){
+      var ops = this.cms.params({p_prmAsOfDate:'2016-04-01'});
+
+      console.log(ops);
+      assert.deepEqual(this.cms.defaults, {
+        jar: true,
+        gzip: true,
+        maxRedirects: 10,
+        baseUrl: 'http://localhost',
+        qs: {
+          p_prmAsOfDate: '2016-04-01'
+        }
+      });
+    });
+  });
+
+  describe('params()', function(){
+    it('should return params after extending the default params', function(){
+      this.cms.defaults.jar = 'foo';
+      this.cms.defaults.gzip = 'bar';
+      this.cms.defaults.maxRedirects = 456;
+
+      var ops = this.cms.params({p_prmAsOfDate:'2016-04-01'});
+
+      assert.deepEqual(this.cms.defaults, {
+        jar: 'foo',
+        gzip: 'bar',
+        maxRedirects: 456,
+        baseUrl: 'http://localhost',
+        qs: {
+          p_prmAsOfDate: '2016-04-01'
+        }
+      });
+    });
+  });
+
   describe('buildCredentialsXmlData()', function(){
 
     it('should be able to build xmlData for credentials', function(){
