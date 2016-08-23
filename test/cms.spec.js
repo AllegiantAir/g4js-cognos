@@ -53,7 +53,7 @@ describe('cms module', function(){
     it('should construct params for all requests to CMS', function(){
       var ops = this.cms.params({p_prmAsOfDate:'2016-04-01'});
 
-      assert.deepEqual(this.cms.defaults, {
+      assert.deepEqual(ops, {
         jar: true,
         gzip: true,
         maxRedirects: 10,
@@ -73,7 +73,7 @@ describe('cms module', function(){
 
       var ops = this.cms.params({p_prmAsOfDate:'2016-04-01'});
 
-      assert.deepEqual(this.cms.defaults, {
+      assert.deepEqual(ops, {
         jar: 'foo',
         gzip: 'bar',
         maxRedirects: 456,
