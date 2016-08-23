@@ -66,6 +66,18 @@ describe('cms module', function(){
   });
 
   describe('params()', function(){
+    it('should should have no impact on defaults object', function(){
+      var ops = this.cms.params({p_prmAsOfDate:'2016-04-01'});
+
+      assert.deepEqual(this.cms.defaults, {
+        jar: true,
+        gzip: true,
+        maxRedirects: 10
+      });
+    });
+  });
+
+  describe('params()', function(){
     it('should return params after extending the default params', function(){
       this.cms.defaults.jar = 'foo';
       this.cms.defaults.gzip = 'bar';
