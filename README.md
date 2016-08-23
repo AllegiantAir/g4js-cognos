@@ -13,6 +13,10 @@ Require the module:
 
 ```js
 var Cms = require('g4js-cognos').Cms;
+
+// Optional update defaults for request module.
+// Cms.defaults.maxRedirects = 100;
+
 ```
 
 Pass in configuration settings, authenticate and get a report by parameters:
