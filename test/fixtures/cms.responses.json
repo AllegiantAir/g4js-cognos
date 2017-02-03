@@ -2,5 +2,6 @@
   "logon": "<auth:accountInfo xmlns:auth=\"http://developer.cognos.com/schemas/ccs/auth/types/1\"><auth:accountID>CAMID(\"acmecompany:u:68a77de3c420284a8af500d95765abdc\")</auth:accountID><auth:displayName>Nesbert Hidalgo</auth:displayName></auth:accountInfo>",
   "logonFail": "<error>RDS-ERR-1005 The logon requirements for IBM Cognos could not be obtained. You may already be logged into this namespace, or the target namespace does not exist.</error>",
   "logoff": "<noerror/>",
-  "getReportById": "<div>HTML REPORT</div>"
+  "getReportById": "<div>HTML REPORT</div>",
+  "getPromptDescriptionById": "<rds:GetPromptDescriptionResponse xmlns:rds=\"http://developer.cognos.com/schemas/rds/types/2\"><rds:prompts xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><canFinish>true</canFinish><hasNextPage>false</hasNextPage><rds:item><rds:PDateTimeBox><rds:name>prmSingleDate</rds:name><rds:multiSelect>false</rds:multiSelect><rds:range>false</rds:range><rds:required>true</rds:required><rds:valueType>DATE</rds:valueType><rds:calendarType>GREGORIAN</rds:calendarType><rds:displaySeconds>false</rds:displaySeconds><rds:displayMilliSeconds>false</rds:displayMilliSeconds><rds:firstDate>0001-01-01</rds:firstDate><rds:lastDate>9999-12-31</rds:lastDate><rds:autoSubmit>false</rds:autoSubmit><rds:selections/></rds:PDateTimeBox></rds:item></rds:prompts><rds:conversationID>i06242524232D2BFCDC071149FD7A0</rds:conversationID></rds:GetPromptDescriptionResponse>"
 }
