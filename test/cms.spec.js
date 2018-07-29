@@ -434,4 +434,43 @@ describe('cms module', function(){
 
   });
 
+  describe('getPromptDescriptionById()', function(){
+    before(function(done){
+      if (!mock) {
+        this.cms.logon().then(function () {
+          done();
+        }).catch(done);
+      } else {
+        done();
+      }
+    });
+
+    it('should return page prompts', function(done){
+      if(mock) {
+        var response = {statusCode: 200, body: responseFixture.getPromptDescriptionById};
+        this.get.callsArgWith(2, null, response);
+      }
+
+      this.cms.getPromptDescriptionById(settingsFixture.reportId, null).then(function(res){
+        assert.equal(res.body, responseFixture.getPromptDescriptionById);
+        done();
+      }).catch(done);
+    });
+
+    it('should use \'promptDescription\' as the resource_id', function(done) {
+      var _this = this;
+
+      if(mock) {
+        var url = this.cms.url('promptDescription', 'report', settingsFixture.reportId);
+        var response = {statusCode: 200, body: responseFixture.getPromptDescriptionById};
+        this.get.callsArgWith(2, null, response);
+      }
+
+      this.cms.getPromptDescriptionById(settingsFixture.reportId, null).then(function(){
+        assert.isOk(_this.get.calledWith(url), 'URL contains \'promptDescription\'');
+        done();
+      }).catch(done);
+    });
+  });
+
 });
